@@ -1,0 +1,43 @@
+@font-face {
+  font-family: 'yg-jalnan';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'yg-jalnan';
+}
+
+.App {
+  background-color: white;
+}
+
+.Button {
+  border: 0;
+  font-size: 2vi;
+  margin-right: 5vw;
+  background-color: white;
+  color: orange;
+}
+
+.NavBar {
+  padding-left: 2vi;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  border-bottom: 2px solid orange;
+}
+
+.title {
+  font-size: 5vh;
+}
+
+.buttonBar {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
