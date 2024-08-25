@@ -1,0 +1,160 @@
+/* App.module.css */
+
+@font-face {
+  font-family: 'yg-jalnan';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'yg-jalnan';
+}
+
+.App {
+  background-color: white;
+}
+
+.ViewButton {
+  border: 0;
+  font-size: 2vi;
+  margin-right: 2vw;
+  margin-left: 2vw;
+  background-color: white;
+  color: gold;
+  transition: font-size 0.3s ease;
+}
+
+.ViewButton:hover {
+  font-size: 1.5rem; /* 크기가 작아지는 효과 */
+}
+
+.NavBar {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 중앙 정렬을 위해 justify-content를 center로 설정 */
+  width: 100%;
+  border-bottom: 5px solid orange;
+  position: relative;
+}
+
+.icon {
+  width: 6vw;
+}
+
+.title {
+  font-size: 2vi;
+}
+
+.buttonBar {
+  display: flex;
+  position: absolute; /* 버튼 바를 절대 위치로 설정 */
+  left: 50%; /* 부모 요소의 50% 지점으로 이동 */
+  transform: translateX(-50%);
+}
+
+.Account {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  left: 100%;
+  width: 15vi;
+  transform: translateX(-170%);
+}
+
+.Guest {
+  width: 15vi;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+}
+
+.Guest * {
+  transition: margin-left 0.3s ease, transform 0.3s ease;
+}
+
+.Guest:hover * {
+  transform: scale(0.75);
+  margin-left: -1vw;
+  transition: margin-left 0.3s ease, transform 0.3s ease;
+}
+
+.login {
+  position: relative;
+  display: flex;
+  width: 4vw;
+}
+
+.noAccount {
+  border: 0;
+  background-color: white;
+  text-decoration: underline 2px;
+}
+
+.GuestButton {
+  display: flex;
+  position: relative;
+  color: #606060;
+  border: 0;
+  font-size: 2vi;
+  background-color: white;
+}
+
+.Main {
+  padding-top: 5vh;
+  margin: 0 auto;
+  display: flex;
+  width: 90%;
+}
+
+.Regist {
+  gap: 2vw;
+  width: 90vi;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.farmForm {
+  padding: 1vi;
+  margin-bottom: 1vw; /* 아래에 PreviewList와 간격을 둠 */
+  border: gold 0.5vw solid;
+  border-radius: 1vi;
+  width: 100%; /* 전체 너비 사용 */
+  box-sizing: border-box;
+}
+
+.farmForm * {
+  display: block;
+}
+
+.farmPreviewList {
+  border: 0.5vw solid greenyellow; /* 선택적으로 테두리 추가 */
+  padding: 1vi;
+  border-radius: 1vi;
+  width: 50vw;
+  box-sizing: border-box;
+}
+
+.image {
+  border: 0.5vw solid greenyellow; /* 선택적으로 테두리 추가 */
+  border-radius: 1vi;
+}
+
+.farmPreviewInfo {
+  height: 90.5%;
+  padding: 1vi;
+  margin-left: 2vw;
+  border: orange 0.5vw solid;
+  border-radius: 1vi;
+  width: 40vw;
+}

@@ -1,22 +1,58 @@
 import { useState, useEffect } from 'react';
-import './App.css';
+import styles from './App.module.css';
 
-function Button({ text, handle }) {
+const API = "여기에 백엔드 api넣으세요~"
+
+function Button({ text, handle, className, value, type, disabled }) {
   return (
-    <button className="Button" onClick={() => handle(text)}>{text}</button>
+    <button 
+      type={type || "button"} 
+      className={className} 
+      onClick={() => handle && handle(value)}
+      disabled={disabled}
+    >
+      {text}
+    </button>
   );
 }
 
-function User({handle, loggedIn}) {
+function FormInput({ label, name, value, onChange, type = "text", placeholder = "" }) {
   return (
-    <div className={"User"}>
+    <div className={styles.formInput}>
+      <label htmlFor={name}>{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+    </div>
+  );
+}
+
+function ViewButton({ text, handle }) {
+  return (
+    <Button value={text} text={text} className={styles.ViewButton} handle={handle} />
+  );
+}
+
+function User({ handle, loggedIn }) {
+  return (
+    <div className={styles.Account}>
       {loggedIn ? (
-        <span>Logged In</span>
+        <div className={styles.User}>
+          <span>로그인 완료</span>
+        </div>
       ) : (
-        <>
-          <img className="login" src="login.png" alt="loginimage" onClick={() => handle("로그인")} />
-          <Button text={"로그인"} handle={handle}/>
-        </>
+        <div className={styles.Guest} onClick={() => handle("로그인")}>
+          <img 
+            className={styles.login} 
+            src="login.png" 
+            alt="로그인 아이콘" 
+          />
+          <Button text="로그인" className={styles.GuestButton} />
+        </div>
       )}
     </div>
   );
@@ -24,12 +60,12 @@ function User({handle, loggedIn}) {
 
 function NavBar({ list, handle, loggedIn }) {
   return (
-    <nav className='NavBar'>
-      <img className="icon" src='nonglock.png' alt='mainlogo'/>
-      <h1 className='title'>농락</h1>
-      <div className='buttonBar'>
+    <nav className={styles.NavBar}>
+      <img className={styles.icon} src='nonglock.png' alt="농락 아이콘" />
+      <h1 className={styles.title}>농락</h1>
+      <div className={styles.buttonBar}>
         {Object.keys(list).map((key) => (
-          <Button key={key} text={key} handle={handle} />
+          <ViewButton key={key} text={key} handle={handle} />
         ))}
       </div>
       <User handle={handle} loggedIn={loggedIn} />
@@ -40,7 +76,7 @@ function NavBar({ list, handle, loggedIn }) {
 
 function Main({ view }) {
   return (
-    <main className='Main'>
+    <main className={styles.Main}>
       {view}
     </main>
   );
@@ -49,8 +85,8 @@ function Main({ view }) {
 function Catalog() {
   return (
     <section>
-      <div className='farmList'></div>
-      <div className='farmInfo'></div>
+      <div className={styles.farmList}></div>
+      <div className={styles.farmInfo}></div>
     </section>
   );
 }
@@ -70,20 +106,15 @@ function Regist() {
   };
 
   return (
-    <section className='Regist'>
-      <div className='formContainer'>
-        <form className='farmForm'>
-          <label htmlFor="farmName">밭 이름</label>
-          <input name="farmName" placeholder='의성 마늘밭'/>
-          
-          <label htmlFor="farmAddress">주소</label>
-          <input name="farmAddress" placeholder='경상북도 의성군 의성읍' />
-          
-          <label htmlFor="farmCrop">작물</label>
-          <input name="farmCrop" placeholder='마늘' />
+    <section className={styles.Regist}>
+      <div className={styles.formContainer}>
+        <form className={styles.farmForm}>
+          <FormInput name="farmName" label="밭 이름" placeholder="의성 마늘밭" />
+          <FormInput name="farmAddress" label="주소" placeholder="경상북도 의성군 의성읍" />
+          <FormInput name="farmCrop" label="작물" placeholder="마늘" />
           
           <label htmlFor="farmWorker">조건</label>
-          <select name='farmWorker'>
+          <select name="farmWorker">
             <option>누구나</option>
             <option>농업 유경험</option>
             <option>농장을 가지고 있음</option>
@@ -97,12 +128,11 @@ function Regist() {
             accept="image/*" 
             onChange={handleImageChange} 
           />
-
         </form>
-        <div className='farmPreviewList'>
+        <div className={styles.farmPreviewList}>
           <div className="image-preview">
             <img 
-              className='image'
+              className={styles.image}
               src={previewSrc || 'placeholder_image.png'} 
               alt="사진 없음" 
               style={{ 
@@ -115,7 +145,7 @@ function Regist() {
           </div>
         </div>
       </div>
-      <div className='farmPreviewInfo'>
+      <div className={styles.farmPreviewInfo}>
         {/* 추가 정보 표시 영역 */}
       </div>
     </section>
@@ -130,10 +160,124 @@ function Community() {
   );
 }
 
-function Login() {
+function Login({ handle, setLoggedIn }) {
+  const [login, setLogin] = useState(true);
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [work, setWork] = useState('');
+  const [name, setName] = useState('');
+  const [idAvailable, setIdAvailable] = useState(true);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${API}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, password }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setLoggedIn(true);
+        handle("둘러보기");
+      } else {
+        alert('로그인 실패');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('로그인 처리 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    if (!idAvailable) {
+      alert('사용할 수 없는 아이디입니다.');
+      return;
+    }
+    try {
+      const response = await fetch(`${API}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, password, work, name }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('회원가입 성공');
+        setLogin(true); // 회원가입 후 로그인 페이지로 이동
+      } else {
+        alert('회원가입 실패');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('회원가입 처리 중 오류가 발생했습니다.');
+    }
+  };
+
+  const checkIdAvailability = async (e) => {
+    const enteredId = e.target.value;
+    setId(enteredId);
+    if (enteredId) {
+      try {
+        const response = await fetch(`${API}/check-id?id=${enteredId}`);
+        const data = await response.json();
+        setIdAvailable(data.available);
+        if (!data.available) {
+          alert('이미 사용 중인 아이디입니다.');
+        }
+      } catch (error) {
+        console.error('Error during ID availability check:', error);
+      }
+    }
+  };
+
   return (
     <section>
-      3
+      {login ? (
+        <>
+          <form onSubmit={handleLoginSubmit}>
+            <FormInput label="아이디" name="id" value={id} onChange={(e) => setId(e.target.value)} />
+            <FormInput label="비밀번호" name="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Button type="submit" text="로그인" />
+          </form>
+          <Button 
+            text="계정이 없습니다." 
+            className={styles.noAccount} 
+            handle={() => setLogin(false)} 
+          />
+        </>
+      ) : (
+        <>
+          <form onSubmit={handleRegisterSubmit}>
+            <FormInput label="아이디" name="id" value={id} onChange={checkIdAvailability} />
+            <FormInput label="비밀번호" name="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <FormInput label="실명" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+            <label htmlFor="work">경험</label>
+            <select 
+              name="work" 
+              value={work} 
+              onChange={(e) => setWork(e.target.value)}>
+              <option value="">경험 선택</option>
+              <option value="0">농업 무경험</option>
+              <option value="1">농업 유경험</option>
+            </select>
+            <Button 
+              type="submit" 
+              text="회원가입" 
+              disabled={!idAvailable} // 아이디 중복 검사 후 사용 가능해야만 가입 가능
+            />
+          </form>
+          <Button 
+            text="계정이 있습니다." 
+            className={styles.noAccount} 
+            handle={() => setLogin(true)} 
+          />
+        </>
+      )}
     </section>
   );
 }
@@ -150,7 +294,7 @@ function App() {
 
   useEffect(() => {
     // 백엔드에서 로그인 상태를 확인하는 API 호출
-    fetch('https://api.example.com/check-login', {
+    fetch(`${API}/check-login`, {
       credentials: 'include'  // 쿠키 포함 옵션 (필요 시)
     })
       .then(response => response.json())
@@ -169,14 +313,14 @@ function App() {
 
   const handleViewChange = (key) => {
     if (key === "로그인") {
-      setView(<Login />);
+      setView(<Login handle={handleViewChange} setLoggedIn={setLoggedIn} />);
     } else {
       setView(viewList[key]);
     }
   };
 
   return (
-    <div className="App">
+    <div className={styles.App}>
       <header className="App-header">
         <NavBar list={viewList} handle={handleViewChange} loggedIn={loggedIn} />
       </header>
