@@ -16,28 +16,61 @@
 .Button {
   border: 0;
   font-size: 2vi;
-  margin-right: 5vw;
+  margin-right: 2vw;
+  margin-left: 2vw;
   background-color: white;
-  color: orange;
+  color: gold;
 }
 
 .NavBar {
-  padding-left: 2vi;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* 중앙 정렬을 위해 justify-content를 center로 설정 */
   width: 100%;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
-  border-bottom: 2px solid orange;
+  border-bottom: 5px solid orange;
+  position: relative;
+}
+
+.NavBar .icon {
+  width: 6vw;
 }
 
 .title {
-  font-size: 5vh;
+  font-size: 2vi;
 }
 
 .buttonBar {
   display: flex;
+  position: absolute; /* 버튼 바를 절대 위치로 설정 */
+  left: 50%; /* 부모 요소의 50% 지점으로 이동 */
+  transform: translateX(-50%);
+}
+
+.User {
+  align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  display: flex;
+  position: relative;
+  left: 100%;
+  width: 15vi;
+  transform: translateX(-170%);
+}
+
+.NavBar .login {
+  position: relative;
+  display: flex;
+  width: 4vw;
+}
+
+.User button {
+  display: flex;
+  position: relative;
+  color: #606060;
+}
+
+.Main {
+  padding-top: 5vh;
+  margin: 0 auto;
+  display: flex;
+  width: 90%;
 }
