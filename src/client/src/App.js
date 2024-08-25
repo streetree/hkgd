@@ -14,7 +14,7 @@ function User({handle, loggedIn}) {
         <span>Logged In</span>
       ) : (
         <>
-          <img className="login" src="login.png" onClick={() => handle("로그인")} />
+          <img className="login" src="login.png" alt="loginimage" onClick={() => handle("로그인")} />
           <Button text={"로그인"} handle={handle}/>
         </>
       )}
@@ -25,7 +25,7 @@ function User({handle, loggedIn}) {
 function NavBar({ list, handle, loggedIn }) {
   return (
     <nav className='NavBar'>
-      <img className="icon" src='nonglock.png' />
+      <img className="icon" src='nonglock.png' alt='mainlogo'/>
       <h1 className='title'>농락</h1>
       <div className='buttonBar'>
         {Object.keys(list).map((key) => (
