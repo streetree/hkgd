@@ -56,9 +56,68 @@ function Catalog() {
 }
 
 function Regist() {
+  const [previewSrc, setPreviewSrc] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <section>
-      <div></div>
+    <section className='Regist'>
+      <div className='formContainer'>
+        <form className='farmForm'>
+          <label htmlFor="farmName">밭 이름</label>
+          <input name="farmName" placeholder='의성 마늘밭'/>
+          
+          <label htmlFor="farmAddress">주소</label>
+          <input name="farmAddress" placeholder='경상북도 의성군 의성읍' />
+          
+          <label htmlFor="farmCrop">작물</label>
+          <input name="farmCrop" placeholder='마늘' />
+          
+          <label htmlFor="farmWorker">조건</label>
+          <select name='farmWorker'>
+            <option>누구나</option>
+            <option>농업 유경험</option>
+            <option>농장을 가지고 있음</option>
+          </select>
+          
+          <label htmlFor="farmImage">사진 업로드:</label>
+          <input 
+            type="file" 
+            id="farmImage" 
+            name="farmImage" 
+            accept="image/*" 
+            onChange={handleImageChange} 
+          />
+
+        </form>
+        <div className='farmPreviewList'>
+          <div className="image-preview">
+            <img 
+              className='image'
+              src={previewSrc || 'placeholder_image.png'} 
+              alt="사진 없음" 
+              style={{ 
+                width: '10vw', 
+                height: '5vw', 
+                objectFit: 'cover',
+                overflow: 'hidden'
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className='farmPreviewInfo'>
+        {/* 추가 정보 표시 영역 */}
+      </div>
     </section>
   );
 }
